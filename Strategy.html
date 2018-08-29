@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Strategy - 策略模式</title>
+</head>
+<body>
+<script type="text/javascript">
+
+// 鸭子类
+var Duck = function(quarkBehavior) {
+  this.quarkBehavior = quarkBehavior;
+}
+
+Duck.prototype = {
+  display: function(){
+    throw new Error('这是一个描述鸭子的抽象方法');
+  },
+  performQuack: function(){
+    this.quarkBehavior.quack()
+  },
+  swim: function(){
+    console.log('所有的鸭子都会游泳')
+  },
+  // 动态设定行为
+  setQuackBehavior: function(qb){
+    this.quarkBehavior = qb;
+  }
+}
+
+// 动态设定行为
+// Duck.prototype.setQuackBehavior = function (qb) {
+//     this.quarkBehavior = qb;
+// };
+
+// 野鸭
+var MallardDuck = function(){
+  Duck.apply(this, arguments);
+}
+MallardDuck.prototype.__proto__ = Duck.prototype;
+MallardDuck.prototype.display = function(){
+  console.log('我是一只野鸭')
+}
+
+// 叫声类
+var QuackBehavior = function(){}
+QuackBehavior.prototype.quack = function(){
+  throw new Error('这是一个描述叫声的接口')
+}
+
+// 具体叫声
+var MuteQuack = function(){}
+MuteQuack.prototype.__proto__ = QuackBehavior.prototype;
+MuteQuack.prototype.quack = function(){
+  console.log('嘎嘎～')
+}
+
+// 另外一种叫声
+var QuackSpeakerPowered = function(){}
+QuackSpeakerPowered.prototype.__proto__ = QuackBehavior.prototype;
+QuackSpeakerPowered.prototype.quack = function(){
+  console.log('嘎～～嘎嘎～')
+}
+
+// 鸭鸣器
+var MiniDucksSimulator = function(){
+  this.main();
+}
+
+MiniDucksSimulator.prototype = {
+  main: function(){
+    var mallard = new MallardDuck(new MuteQuack())
+    mallard.performQuack();
+    mallard.swim()
+    mallard.setQuackBehavior(new QuackSpeakerPowered());
+    mallard.performQuack();
+    mallard.swim()
+  }
+}
+
+new MiniDucksSimulator();
+
+
+</script>
+</body>
+</html>
