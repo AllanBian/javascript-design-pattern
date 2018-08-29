@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Observer - 观察者模式</title>
+</head>
+<body>
+<script type="text/javascript">
+function extend(subclass, superclass) {
+    var F = function () {};
+    F.prototype = superclass.prototype;
+    subclass.prototype = new F();
+    subclass.prototype.constructor = subclass;
+    subclass.super = superclass.prototype;
+
+    if (superclass.prototype.constructor === Object.prototype.constructor) {
+        superclass.prototype.constructor = superclass;
+    }
+}
+
+// 目标对象，作为被观察者，报社
+function Subject() {
+    this.readers = [];
+}
+
+Subject.prototype = {
+    // 报纸的读者需要向报社订阅，先要注册
+    attach: function (reader) {
+        this.readers.push(reader);
+    },
+    detach: function (reader) {
+        for (var i = 0, len = this.readers.length; i < len; i++) {
+            if (reader === this.readers[i]) {
+                this.readers.splice(i, 1);
+                return;
+            }
+        }
+    },
+    // 当每期报纸印刷出来后，就要迅速主动地被送到读者的手中
+    // 相当于通知读者，让他们知道
+    notifyObservers: function () {
+        for (var i = 0, len = this.readers.length; i < len; i++) {
+            this.readers[i].update(this);
+        }
+    }
+};
+
+// 报纸对象，具体的目标实现
+function NewsPaper() {
+    NewsPaper.super.constructor.call(this);
+    this.content = '';
+}
+
+extend(NewsPaper, Subject);
+// 获取报纸的具体内容
+NewsPaper.prototype.getContent = function () {
+    return this.content;
+};
+// 设置报纸的具体内容，相当于要出版报纸了
+NewsPaper.prototype.setContent = function (content) {
+    this.content = content;
+    // 内容有了，说明又出报纸了，那就通知所有的读者
+    this.notifyObservers();
+};
+
+// 观察者接口
+function Observer() {
+}
+
+Observer.prototype.update = function () {
+};
+
+
+function Reader() {
+    this.name = '';
+}
+
+extend(Reader, Observer);
+Reader.prototype.update = function (subject) {
+    console.log(this.name + '收到报纸了，阅读它，内容是：' + subject.getContent());
+};
+
+new function () {
+    var subject = new NewsPaper();
+
+    var reader1 = new Reader();
+    reader1.name = '张三';
+
+    var reader2 = new Reader();
+    reader2.name = '李四';
+
+    var reader3 = new Reader();
+    reader3.name = '王五';
+
+    subject.attach(reader1);
+    subject.attach(reader2);
+    subject.attach(reader3);
+
+    subject.setContent('本期内容是观察者模式');
+}();
+</script>
+</body>
+</html>
