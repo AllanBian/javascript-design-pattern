@@ -36,12 +36,17 @@ Duck.prototype = {
 var MallardDuck = function(){
   Duck.apply(this, arguments);
 }
+// 每个对象的__proto__属性指向自身构造函数的prototype, 这里我们用Duck作为MallardDuck构造函数的原型
 MallardDuck.prototype.__proto__ = Duck.prototype;
 MallardDuck.prototype.display = function(){
   console.log('我是一只野鸭')
 }
 
-// 叫声类
+// console.log(Function.prototype.__proto__===Object.prototype)
+// Function.prototype的__proto__指向其构造函数Object的prototype
+// Function.prototype是一个对象,同样是一个方法,方法是函数,所以它必须有自己的构造函数也就是Object
+
+// 叫声接口
 var QuackBehavior = function(){}
 QuackBehavior.prototype.quack = function(){
   throw new Error('这是一个描述叫声的接口')
