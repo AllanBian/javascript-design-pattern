@@ -23,33 +23,35 @@ function Macbook() {
   }
 }
 
+// 装饰器
 function PcDecorator(device){
   this.device = device
 }
-
 PcDecorator.prototype = {
   cost: function(){
     return this.device.cost() + this.price
   }
 }
 
+// 内存
 function Memory(){
   this.price = 100
   PcDecorator.apply(this,arguments)
 }
 
-function BlurayDrive(){
+// 光驱
+function CdDrive(){
   this.price = 300
   PcDecorator.apply(this,arguments)
 }
 
 extend(Memory,PcDecorator);
-extend(BlurayDrive,PcDecorator);
+extend(CdDrive,PcDecorator);
 
-var macbook = new Macbook();
-macbook = new Memory(macbook);
-macbook = new BlurayDrive(macbook);
-console.log(macbook.cost())
+var macbook = new Macbook(); // 买个macbook
+macbook = new Memory(macbook); // 买个内存
+macbook = new CdDrive(macbook); // 买个光驱
+console.log(macbook.cost()) // 老板结帐
 
 </script>
 </body>
