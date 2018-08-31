@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Decorator - 装饰者模式</title>
+</head>
+<body>
+<script type="text/javascript">
+function extend(subclass, superclass) {
+    var F = function () {};
+    F.prototype = superclass.prototype;
+    subclass.prototype = new F();
+    subclass.prototype.constructor = subclass;
+
+    subclass.super = superclass.prototype;
+    if (superclass.prototype.constructor === Object.prototype.constructor) {
+        superclass.prototype.constructor = superclass;
+    }
+}
+
+function Macbook() {
+  this.cost = function(){
+    return 1000;
+  }
+}
+
+function PcDecorator(device){
+  this.device = device
+}
+
+PcDecorator.prototype = {
+  cost: function(){
+    return this.device.cost() + this.price
+  }
+}
+
+function Memory(){
+  this.price = 100
+  PcDecorator.apply(this,arguments)
+}
+
+function BlurayDrive(){
+  this.price = 300
+  PcDecorator.apply(this,arguments)
+}
+
+extend(Memory,PcDecorator);
+extend(BlurayDrive,PcDecorator);
+
+var macbook = new Macbook();
+macbook = new Memory(macbook);
+macbook = new BlurayDrive(macbook);
+console.log(macbook.cost())
+
+</script>
+</body>
+</html>
