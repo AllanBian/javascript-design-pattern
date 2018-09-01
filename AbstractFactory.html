@@ -10,40 +10,34 @@
  */
 var AbstractFactory = function () {};
 AbstractFactory.prototype = {
-    /**
-     * 示例方法，创建抽象产品A的对象
-     * @return {[type]} 抽象产品A的对象
-     */
-    createProductA: function () {},
-    // 创建抽象产品B
-    createProductB: function () {}
+  /**
+   * 示例方法，创建抽象产品A的对象
+   * @return {[type]} 抽象产品A的对象
+   */
+  createProductA: function () {},
+  // 创建抽象产品B
+  createProductB: function () {}
 };
 
 /**
  * 抽象产品A,B的接口
  */
 var AbstractProductA = function () {};
-// ...
 var AbstractProductB = function () {};
-// ...
 
 // 产品A的实现
 var ProductA1 = function () {};
 ProductA1.prototype = Object.create(AbstractProductA.prototype);
-// ...
 
 var ProductA2 = function () {};
 ProductA2.prototype = Object.create(AbstractProductA.prototype);
-// ...
 
 // 产品B的实现
 var ProductB1 = function () {};
 ProductB1.prototype = Object.create(AbstractProductB.prototype);
-// ...
 
 var ProductB2 = function () {};
 ProductB2.prototype = Object.create(AbstractProductB.prototype);
-// ...
 
 /**
  * 具体的工厂实现对象，实现创建具体的产品对象的操作
