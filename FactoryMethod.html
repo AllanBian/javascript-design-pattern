@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Factory Method - 工厂方法模式</title>
+</head>
+<body>
+<script type="text/javascript">
+function extend(subclass, superclass) {
+  var F = function(){}
+  F.prototype = superclass.prototype;
+  subclass.prototype = new F();
+  subclass.prototype.constructor = subclass
+
+  subclass.super = superclass.prototype;
+  if (superclass.prototype.constructor === Object.prototype.constructor) {
+    superclass.prototype.constructor = superclass;
+  }
+}
+
+// PizzaStoreAbs 披萨店抽象类
+function PizzaStore() {}
+PizzaStore.prototype = {
+  orderPizza: function(type){
+    throw new Error('这是披萨店抽象类,请使用实现类来实现')
+  },
+  welcome: function(){
+    console.log('欢迎到' + this.name + '点餐!')
+  }
+}
+
+// PizzaFactory 制造披萨工厂抽象类
+function PizzaFactory() {}
+PizzaFactory.prototype = {
+  createPizza: function(type){
+    var pizza;
+    switch (type) {
+      case 'cheese':
+        pizza = new cheesePizza();
+        break;
+      case 'seafood':
+        pizza = new seafoodPizza();
+        break;
+      default:
+        // statements_def
+        break;
+    }
+    return pizza;
+  },
+  showChefMsg: function(){
+    console.log(this.name + '正在为您制作!');
+  }
+}
+
+// Pizza 披萨抽象类
+function Pizza() {}
+Pizza.prototype = {
+  make: function(){
+    console.log('揉面中...')
+  },
+  mix: function(){
+    console.log('处理各种食材...加入')
+  },
+  cook: function(){
+    console.log('进烤箱烤制...')
+  },
+  finish: function(){
+    console.log('烤完了,' + this.name + '出锅。')
+  }
+}
+
+// 中国城披萨商店
+function ChinaTownPizzaStore() {
+  this.name = '中国城披萨店';
+  this.orderPizza = function(type){
+    var chef = Math.round((Math.random()*10)) > 4 ? new zhangPizzaFactory() : new wangPizzaFactory();
+    chef.showChefMsg();
+    var pizza = chef.createPizza(type);
+    this.welcome();
+    pizza.make();
+    pizza.mix();
+    pizza.cook();
+    pizza.finish();
+    return pizza;
+  }
+}
+// USA披萨商店
+function USAPizzaStore() {
+  this.name = '美国披萨店';
+  this.orderPizza = function(type){
+    var chef = Math.round((Math.random()*10)) > 4 ? new zhangPizzaFactory() : new wangPizzaFactory();
+    chef.showChefMsg();
+    var pizza = chef.createPizza(type);
+    this.welcome();
+    pizza.make();
+    pizza.mix();
+    pizza.cook();
+    pizza.finish();
+    return pizza;
+  }
+}
+extend(ChinaTownPizzaStore, PizzaStore);
+extend(USAPizzaStore, PizzaStore);
+
+// 芝士披萨
+function cheesePizza(){
+  this.name = '芝士披萨';
+}
+// 海鲜披萨
+function seafoodPizza(){
+  this.name = '海鲜披萨';
+}
+extend(cheesePizza, Pizza)
+extend(seafoodPizza, Pizza)
+
+function zhangPizzaFactory(){
+  this.name = '张厨师';
+}
+function wangPizzaFactory(){
+  this.name = '王厨师';
+}
+extend(zhangPizzaFactory, PizzaFactory);
+extend(wangPizzaFactory, PizzaFactory);
+
+
+
+var chinaPizza = new ChinaTownPizzaStore();
+var usaPizza = new USAPizzaStore();
+chinaPizza.orderPizza('cheese');
+console.log('-------------')
+usaPizza.orderPizza('seafood');
+
+
+</script>
+</body>
+</html>
