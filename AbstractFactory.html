@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Abstract Factory - 抽象工厂模式</title>
+</head>
+<body>
+<script type="text/javascript">
+/**
+ * 抽象工厂的接口，声明创建抽象产品对象的操作
+ */
+var AbstractFactory = function () {};
+AbstractFactory.prototype = {
+    /**
+     * 示例方法，创建抽象产品A的对象
+     * @return {[type]} 抽象产品A的对象
+     */
+    createProductA: function () {},
+    // 创建抽象产品B
+    createProductB: function () {}
+};
+
+/**
+ * 抽象产品A,B的接口
+ */
+var AbstractProductA = function () {};
+// ...
+var AbstractProductB = function () {};
+// ...
+
+// 产品A的实现
+var ProductA1 = function () {};
+ProductA1.prototype = Object.create(AbstractProductA.prototype);
+// ...
+
+var ProductA2 = function () {};
+ProductA2.prototype = Object.create(AbstractProductA.prototype);
+// ...
+
+// 产品B的实现
+var ProductB1 = function () {};
+ProductB1.prototype = Object.create(AbstractProductB.prototype);
+// ...
+
+var ProductB2 = function () {};
+ProductB2.prototype = Object.create(AbstractProductB.prototype);
+// ...
+
+/**
+ * 具体的工厂实现对象，实现创建具体的产品对象的操作
+ */
+var ConcretFactory1 = function () {};
+ConcretFactory1.prototype = Object.create(AbstractFactory.prototype);
+ConcretFactory1.prototype.createProductA = function () {
+    return new ProductA1();
+};
+ConcretFactory1.prototype.createProductB = function () {
+    return new ProductB1();
+};
+
+var ConcretFactory2 = function () {};
+ConcretFactory2.prototype = Object.create(AbstractFactory.prototype);
+ConcretFactory2.prototype.createProductA = function () {
+    return new ProductA2();
+};
+ConcretFactory2.prototype.createProductB = function () {
+    return new ProductB2();
+};
+
+// 客户端
+var af = new ConcretFactory1();
+af.createProductA();
+af.createProductB();
+
+</script>
+</body>
+</html>
