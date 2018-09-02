@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Singleton - 单例模式</title>
+</head>
+<body>
+<script type="text/javascript">
+
+// 懒汉式
+var Singleton = (function(){
+  var uniqueInstance = null;
+
+  var singletonData = '我是懒汉式';
+
+  var Singleton = function(){
+
+  }
+  Singleton.prototype.getSingletonData = function(){
+    console.log(singletonData);
+  }
+
+  return {
+    getInstance: function(){
+      if(uniqueInstance === null){
+        uniqueInstance = new Singleton();
+      }
+      return uniqueInstance;
+    },
+    getSingletonData: function(){
+      return singletonData;
+    }
+  }
+
+}());
+Singleton.getInstance().getSingletonData();
+console.log(Singleton.getSingletonData() + '---通过单例的方法获取私有变量');
+
+// 饿汉式
+var Singleton = (function(){
+  var uniqueInstance = new Singleton()
+  var singletonData = '我是饿汉式';
+
+  function Singleton(){
+
+  }
+  Singleton.prototype.getSingletonData = function(){
+    console.log(singletonData);
+  }
+
+  return {
+    getInstance: function(){
+      return uniqueInstance;
+    },
+    getSingletonData: function(){
+      return singletonData;
+    }
+  }
+}());
+Singleton.getInstance().getSingletonData();
+console.log(Singleton.getSingletonData() + '---通过单例的方法获取私有变量');
+
+</script>
+</body>
+</html>
