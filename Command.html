@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Command - 命令模式</title>
+</head>
+<body>
+<script type="text/javascript">
+
+// 命令对象
+function Command(receiver){
+  this.receiver = receiver;
+}
+Command.prototype.execute = function(){
+  console.log('command执行receiver的action方法');
+  // 让接受者执行方法
+  this.receiver.action()
+};
+
+
+// 接受者对象
+function Receiver(){}
+Receiver.prototype.action = function(){
+  console.log('执行接受者receiver的action方法');
+};
+
+// 调用者
+function Invoker(){}
+Invoker.prototype.setCommand = function(command){ // 设置命令
+  this.command = command;
+  console.log('设置要调用的command对象');
+};
+Invoker.prototype.runCommand = function(){ // 执行请求
+  console.log('调用者invoker执行命令command对象的execute方法')
+  this.command.execute();
+};
+
+function Client(){
+  var receiver = new Receiver();
+  var command = new Command(receiver);
+  var invoker = new Invoker();
+  invoker.setCommand(command);
+  invoker.runCommand()
+}
+
+new Client();
+
+
+</script>
+</body>
+</html>
