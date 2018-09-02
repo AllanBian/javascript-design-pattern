@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Template Method - 模版方法模式</title>
+</head>
+<body>
+<script type="text/javascript">
+function extend(subclass, superclass){
+  var F = function(){}
+  F.prototype = superclass.prototype
+  subclass.prototype = new F()
+  subclass.prototype.constructor = subclass;
+
+  subclass.super = superclass.prototype;
+  if(superclass.prototype.constructor === Object.prototype.constructor){
+    superclass.prototype.constructor = superclass;
+  }
+}
+
+var makeDrink = function () {}
+makeDrink.prototype = {
+  make: function(){
+    this.boilWater();
+    this.brew();
+    this.pourInCup();
+    this.add();
+  },
+  boilWater: function(){
+    console.log('煮水');
+  },
+  brew: function(){
+    throw new Error('冲泡抽象方法,请在子类中添加你要冲泡的饮品')
+  },
+  pourInCup: function(){
+    console.log('倒入杯子');
+  },
+  add: function(){
+    throw new Error('添加辅料抽象方法,请在子类中添加你要添加的辅料');
+  }
+}
+
+var Coffee = function(){
+  this.brew = function(){
+    console.log('处理咖啡豆');
+  }
+  this.add = function(){
+    console.log('加入糖,奶');
+  }
+}
+
+extend(Coffee, makeDrink);
+
+var Tea = function(){
+  this.brew = function(){
+    console.log('放入茶叶');
+  }
+  this.add = function(){
+    console.log('加一片柠檬');
+  }
+}
+extend(Tea, makeDrink);
+
+var coffee = new Coffee();
+var tea = new Tea();
+coffee.make();
+tea.make();
+
+
+</script>
+</body>
+</html>
