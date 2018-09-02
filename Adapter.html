@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Adapter - 适配器模式</title>
+</head>
+<body>
+<script type="text/javascript">
+var Cat = function(){}
+Cat.prototype.shout = function(){
+  console.log('喵');
+};
+
+var Dog = function(){}
+Dog.prototype.cry = function(){
+  console.log('汪汪汪');
+};
+
+var CatAdapter = function(animal){
+  this.animal = animal;
+}
+
+CatAdapter.prototype.shout = function(){
+  console.log('狗适配猫的shout叫法');
+  this.animal.cry();
+};
+
+var dog = new Dog();
+var catAdapter = new CatAdapter(dog);
+catAdapter.shout();
+
+</script>
+</body>
+</html>
