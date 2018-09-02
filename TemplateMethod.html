@@ -24,6 +24,9 @@ makeDrink.prototype = {
     this.brew();
     this.pourInCup();
     this.add();
+    if(this.takeOutTag()){
+      this.takeOut();
+    }
   },
   boilWater: function(){
     console.log('煮水');
@@ -36,6 +39,12 @@ makeDrink.prototype = {
   },
   add: function(){
     throw new Error('添加辅料抽象方法,请在子类中添加你要添加的辅料');
+  },
+  takeOutTag: function(){ // 预留的钩子函数
+    return false;
+  },
+  takeOut: function(){
+    console.log('把这杯饮料送给需要的人');
   }
 }
 
@@ -57,13 +66,36 @@ var Tea = function(){
   this.add = function(){
     console.log('加一片柠檬');
   }
+  this.takeOutTag = function(){
+    return true;
+  }
 }
 extend(Tea, makeDrink);
 
+var GreenTea = function(){
+  this.brew = function(){
+    console.log('放入绿茶茶叶');
+  }
+  this.add = function(){
+    console.log('加入牛奶');
+  }
+  this.takeOutTag = function(){
+    return true;
+  }
+  this.takeOut = function(){
+    console.log('把这杯绿茶送给那个女士');
+  }
+}
+extend(GreenTea, makeDrink);
+
 var coffee = new Coffee();
 var tea = new Tea();
+var greenTea = new GreenTea();
 coffee.make();
+console.log('--------');
 tea.make();
+console.log('--------');
+greenTea.make();
 
 
 </script>
