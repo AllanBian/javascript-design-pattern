@@ -53,11 +53,11 @@ Garment.prototype.addChild = function(child){
 Garment.prototype.removeChild = function(child){
   var idx = this.childComponents.indexOf(child);
   if(idx !== -1){
-    for(var i = 0, len = child.getChildren().length; i < len; i++){
-      var c = child.getChildren()[i];
-      c.parent = this;
-      this.childComponents.push(c)
-    }
+    // for(var i = 0, len = child.getChildren().length; i < len; i++){
+    //   var c = child.getChildren()[i];
+    //   c.parent = this;
+    //   this.childComponents.push(c)
+    // }
     this.childComponents.splice(idx, 1);
   }
 }
@@ -89,12 +89,12 @@ var leaf1 = new Leaf('衬衣');
 var leaf2 = new Leaf('夹克');
 var leaf3 = new Leaf('裙子');
 var leaf4 = new Leaf('套装');
-garment.addChild(man);
-garment.addChild(woman);
 man.addChild(leaf1);
 man.addChild(leaf2);
 woman.addChild(leaf3);
 woman.addChild(leaf4);
+garment.addChild(man);
+garment.addChild(woman);
 
 garment.printStruct();
 console.log('---------------------');
