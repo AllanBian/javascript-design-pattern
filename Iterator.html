@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Iterator - 迭代器模式</title>
+</head>
+<body>
+<script type="text/javascript">
+// 迭代器
+var Iterator = function(aggregate){
+  this.aggregate = aggregate;
+  this.index = -1;
+}
+Iterator.prototype = {
+  init: function(){
+    this.index = 0;
+  },
+  next: function(){
+    if(this.index < this.aggregate.size()){
+      this.index++;
+    }
+  },
+  isDone: function(){
+    return this.index === this.aggregate.size();
+  },
+  currentItem: function(){
+    return this.aggregate.get(this.index);
+  }
+}
+
+var Aggregate = function(items){
+  this.items = items;
+}
+Aggregate.prototype = {
+  createIterator: function(){
+    return new Iterator(this);
+  },
+  get: function(index){
+    var item = null;
+    if(index < this.items.length){
+      item = this.items[index];
+    }
+    return item;
+  },
+  size: function(){
+    return this.items.length;
+  }
+}
+
+var members = ['one','two','three'];
+var aggregate = new Aggregate(members);
+var it = aggregate.createIterator();
+var currentItem;
+it.init();
+
+while(!it.isDone()){
+  currentItem = it.currentItem();
+  console.log(currentItem);
+  it.next();
+}
+
+</script>
+</body>
+</html>
