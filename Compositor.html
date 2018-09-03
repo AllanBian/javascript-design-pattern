@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Compositor - 组合模式</title>
+</head>
+<body>
+<script type="text/javascript">
+function extend(subclass, superclass){
+  var F = function(){}
+  F.prototype = superclass.prototype;
+  subclass.prototype = new F();
+  subclass.prototype.constructor = subclass;
+
+  subclass.super = superclass.prototype;
+  if(superclass.prototype.constructor === Object.prototype.constructor){
+    superclass.prototype.constructor = superclass;
+  }
+}
+
+var Component = function(){
+  this.parent = null
+}
+
+Component.prototype = {
+  getChildren: function(){
+    throw new Error('当前方法是抽象方法!')
+  },
+  addChild: function(){
+    throw new Error('当前方法是抽象方法!')
+  },
+  removeChild: function(){
+    throw new Error('当前方法是抽象方法!')
+  },
+  getChild: function(){
+    throw new Error('当前方法是抽象方法!')
+  },
+  printStruct: function(){
+    throw new Error('当前方法是抽象方法!')
+  }
+};
+
+var Garment = function(name){
+  this.childComponents = [];
+  this.name = name;
+}
+extend(Garment, Component);
+
+Garment.prototype.addChild = function(child){
+  this.childComponents.push(child);
+  child.parent = this;
+}
+
+Garment.prototype.removeChild = function(child){
+  var idx = this.childComponents.indexOf(child);
+  if(idx !== -1){
+    for(var i = 0, len = child.getChildren().length; i < len; i++){
+      var c = child.getChildren()[i];
+      c.parent = this;
+      this.childComponents.push(c)
+    }
+    this.childComponents.splice(idx, 1);
+  }
+}
+Garment.prototype.getChildren = function(){
+  return this.childComponents;
+}
+Garment.prototype.printStruct = function(preStr){
+  preStr = preStr || '';
+  console.log('Garment name:' + this.name);
+  for (var i = 0, len = this.childComponents.length; i < len; i++){
+    var c = this.childComponents[i];
+    c.printStruct('   ')
+  }
+}
+
+var Leaf = function(name){
+  this.name = name;
+}
+extend(Leaf, Component);
+Leaf.prototype.printStruct = function(preStr){
+  console.log(preStr + this.name);
+}
+
+var garment = new Garment('服装');
+var man = new Garment('男装');
+var woman = new Garment('女装');
+
+var leaf1 = new Leaf('衬衣');
+var leaf2 = new Leaf('夹克');
+var leaf3 = new Leaf('裙子');
+var leaf4 = new Leaf('套装');
+garment.addChild(man);
+garment.addChild(woman);
+man.addChild(leaf1);
+man.addChild(leaf2);
+woman.addChild(leaf3);
+woman.addChild(leaf4);
+
+garment.printStruct();
+console.log('---------------------');
+garment.removeChild(man);
+garment.printStruct();
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
