@@ -19,54 +19,57 @@ function extend(subclass, superclass){
 
 // 状态接口
 var State = function(){}
-State.prototype.download = function(){
+State.prototype = {
+  download: function(){
     throw new Error('此类是抽象类');
+  },
+  pause: function(){
+    throw new Error('此类是抽象类');
+  },
+  fail: function(){
+    throw new Error('此类是抽象类');
+  },
+  done: function(){
+    throw new Error('此类是抽象类');
+  }
 }
-State.prototype.pause = function(){
-  throw new Error('此类是抽象类');
-}
-State.prototype.fail = function(){
-  throw new Error('此类是抽象类');
-}
-State.prototype.done = function(){
-  throw new Error('此类是抽象类');
-}
-
 
 // 下载类
 var Download = function(){
   this.oState = new ReadyState(this);
 }
 
-Download.prototype.setState = function(oState){
-  this.oState = oState;
-}
-Download.prototype.download = function(){
-  this.oState.download();
-}
-Download.prototype.pause = function(){
-  this.oState.pause();
-}
-Download.prototype.fail = function(){
-  this.oState.fail();
-}
-Download.prototype.done = function(){
-  this.oState.done();
-}
-Download.prototype.getReadyState = function(){
-  return new ReadyState(this);
-}
-Download.prototype.getDownloadingState = function(){
-  return new DownloadingState(this);
-}
-Download.prototype.getDownloadPauseState = function(){
-  return new DownloadPauseState(this);
-}
-Download.prototype.getDownloadedState = function(){
-  return new DownloadedState(this);
-}
-Download.prototype.getDownloadedFailedState = function(){
-  return new DownloadedFailedState(this);
+Download.prototype = {
+  setState: function(oState){
+    this.oState = oState;
+  },
+  download: function(){
+    this.oState.download();
+  },
+  pause: function(){
+    this.oState.pause();
+  },
+  fail: function(){
+    this.oState.fail();
+  },
+  done: function(){
+    this.oState.done();
+  },
+  getReadyState: function(){
+    return new ReadyState(this);
+  },
+  getDownloadingState: function(){
+    return new DownloadingState(this);
+  },
+  getDownloadPauseState: function(){
+    return new DownloadPauseState(this);
+  },
+  getDownloadedState: function(){
+    return new DownloadedState(this);
+  },
+  getDownloadedFailedState: function(){
+    return new DownloadedFailedState(this);
+  }
 }
 
 // 初始化状态类
