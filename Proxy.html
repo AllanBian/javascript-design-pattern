@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Proxy - 代理模式</title>
+</head>
+<body>
+<script type="text/javascript">
+function extend(subclass, superclass){
+  var F = function(){}
+  F.prototype = superclass.prototype;
+  subclass.prototype = new F();
+  subclass.prototype.constructor = subclass;
+
+  subclass.super = superclass.prototype;
+  if(superclass.prototype.constructor === Object.prototype.constructor){
+    superclass.prototype.constructor = superclass;
+  }
+}
+
+var Image = function(){};
+Image.prototype = {
+  display: function(){
+    throw new Error('这是一个抽象方法')
+  }
+}
+
+// 真实图片
+var RealImage = function(filename){
+  this.filename = filename;
+  this.loadImage();
+}
+extend(RealImage, Image);
+RealImage.prototype = {
+  loadImage: function(){
+    console.log('载入文件' + this.filename);
+  },
+  display: function(){
+    console.log('显示图片' + this.filename)
+  }
+}
+
+// 图片代理
+var ProxyImage = function(filename){
+  this.filename = filename;
+  this.realImage = null;
+}
+extend(ProxyImage, Image);
+ProxyImage.prototype = {
+  display: function(){
+    console.log('执行了代理的display方法');
+    if(this.realImage == null){
+      this.realImage = new RealImage(this.filename);
+    }
+    this.realImage.display();
+  }
+}
+
+var img = new ProxyImage('av.jpg');
+img.display();
+</script>
+</body>
+</html>
